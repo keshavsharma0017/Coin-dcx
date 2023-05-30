@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "260131588892",
+    "project_id": "coin-dcx-clone",
+    "storage_bucket": "coin-dcx-clone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260131588892:android:8fc3b1db5dab743452c8d9",
+        "android_client_info": {
+          "package_name": "com.example.coindcx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260131588892-ppu1t60k5qjdjn2c7pk2nq0iioma3eb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_ijJRjryAA0xu4TlRITO9KN5hJdgTxi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260131588892-ppu1t60k5qjdjn2c7pk2nq0iioma3eb8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
