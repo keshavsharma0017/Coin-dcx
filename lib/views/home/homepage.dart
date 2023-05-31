@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:coindcx/constant/routes.dart';
 import 'package:flutter/material.dart';
 import '../../service/api_call.dart';
@@ -18,19 +20,6 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: const Color.fromARGB(255, 56, 41, 196),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        // actions: [
-        //   IconButton(
-        //       onPressed: () async {
-        //         await FirebaseAuth.instance.signOut();
-        //         if (!mounted) return;
-        //         Navigator.pushNamedAndRemoveUntil(
-        //             context, startRoute, (route) => false);
-        //       },
-        //       icon: const Icon(
-        //         Icons.notifications_active,
-        //         color: Color.fromARGB(255, 56, 41, 196),
-        //       ))
-        // ],
         title: Row(
           children: [
             IconButton(
@@ -158,67 +147,55 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     SizedBox(
                       height: 150,
-                      child: FutureBuilder(
-                        future: dataCall(),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.done:
-                              return ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: 12,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 5.0,
-                                      bottom: 10.0,
-                                      left: 5.0,
-                                      right: 5.0,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              top: 5.0,
+                              bottom: 10.0,
+                              left: 5.0,
+                              right: 5.0,
+                            ),
+                            child: Container(
+                              width: 120,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade400,
+                                    blurRadius: 5,
+                                    offset: const Offset(5, 5),
+                                  ),
+                                  const BoxShadow(
+                                    color: Colors.white,
+                                    blurRadius: 1,
+                                    offset: Offset(-1, -1),
+                                  ),
+                                ],
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "${cachedCryptoList[0][index]["name"]}",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    child: Container(
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.shade400,
-                                            blurRadius: 5,
-                                            offset: const Offset(5, 5),
-                                          ),
-                                          const BoxShadow(
-                                            color: Colors.white,
-                                            blurRadius: 1,
-                                            offset: Offset(-1, -1),
-                                          ),
-                                        ],
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "${cryptoList[0][index]["name"]}",
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          Image.network(
-                                              "${cryptoList[0][index]["image"]}",
-                                              height: 55),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            default:
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                          }
+                                  ),
+                                  Image.network(
+                                      "${cachedCryptoList[0][index]["image"]}",
+                                      height: 55),
+                                ],
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ),
