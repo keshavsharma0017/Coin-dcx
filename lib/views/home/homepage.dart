@@ -1,7 +1,8 @@
-import 'dart:math';
-
-import 'package:coindcx/constant/routes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coindcx/constant/info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../constant/routes.dart';
 import '../../service/api_call.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -22,18 +23,17 @@ class _MyHomePageState extends State<MyHomePage> {
         automaticallyImplyLeading: false,
         title: Row(
           children: [
-            IconButton(
-                onPressed: () async {
-                  // Navigator.of(context).pushNamed(settingRoute);
-                },
-                icon: const Icon(
-                  Icons.panorama_fish_eye_outlined,
-                  color: Color.fromARGB(255, 56, 41, 196),
-                )),
-            const Text(
-              "Hello Keshav",
-              style: TextStyle(
-                  color: Color.fromARGB(255, 56, 41, 196), fontSize: 17),
+            CircleAvatar(
+              radius: 20,
+              backgroundImage: NetworkImage(Apkdata.pimage),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              "Hello ${Apkdata.pname}",
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 45, 121, 243), fontSize: 17),
             ),
           ],
         ),
@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -68,7 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    FirebaseAuth.instance.signOut();
+                                    Navigator.of(context).pushNamed(startRoute);
+                                  },
                                   icon: const Icon(Icons.monetization_on)),
                               const Text(
                                 "Add Funds ",
@@ -86,7 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Column(
                             children: [
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    returnInfo();
+                                  },
                                   icon: const Icon(
                                       Icons.shopping_basket_rounded)),
                               const Text(
@@ -152,6 +156,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         physics: const BouncingScrollPhysics(),
                         itemCount: 10,
                         itemBuilder: (context, index) {
+                          // print("10000");
+                          // print("${cachedCryptoList[0][index]["name"]}");
+                          // log(cachedCryptoList[0][index]["name"]);
+                          // print("2");
+                          // log(cachedCryptoList[0][index]["price"]);
+                          // print("3");
+                          // log(cachedCryptoList[0][index]["image"]);
+                          // print("4");
                           return Padding(
                             padding: const EdgeInsets.only(
                               top: 5.0,
@@ -208,4 +220,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
+
+Future<String> returnInfo() async {
+  User user = FirebaseAuth.instance.currentUser!;
+  DocumentSnapshot snapshot =
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+  String username = snapshot.data().toString();
+  print(username);
+  return username;
 }

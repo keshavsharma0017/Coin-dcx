@@ -25,52 +25,57 @@ class _TestpageState extends State<Testpage> {
     const Pricepage(),
     const Pricepage()
   ];
-  // int index = 0;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: dataCall(),
       builder: (context, snapshot) {
-        return Scaffold(
-          body: SafeArea(
-            child: IndexedStack(
-              index: Apkdata.selectedIndex,
-              children: const [
-                MyHomePage(),
-                Pricepage(),
-                Profilepage(),
-              ],
-            ),
-          ),
-          // body: SafeArea(child: screens[index]),
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            selectedLabelStyle: TextStyle(color: Colors.blue[200]),
-            selectedIconTheme: IconThemeData(color: Colors.blue[200]),
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const CircularProgressIndicator();
+          case ConnectionState.done:
+            return Scaffold(
+              body: SafeArea(
+                child: IndexedStack(
+                  index: Apkdata.selectedIndex,
+                  children: const [
+                    MyHomePage(),
+                    Pricepage(),
+                    Profilepage(),
+                  ],
+                ),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.area_chart_rounded),
-                label: 'Prices',
-                // backgroundColor: Colors.grey
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                selectedLabelStyle: TextStyle(color: Colors.blue[200]),
+                selectedIconTheme: IconThemeData(color: Colors.blue[200]),
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.area_chart_rounded),
+                    label: 'Prices',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.account_balance_wallet_outlined),
+                    label: 'Profile',
+                  ),
+                ],
+                currentIndex: Apkdata.selectedIndex,
+                selectedItemColor: Colors.blue[200],
+                unselectedItemColor: Colors.grey,
+                showSelectedLabels: true,
+                showUnselectedLabels: true,
+                unselectedLabelStyle: const TextStyle(color: Colors.grey),
+                onTap: _onItemTapped,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_balance_wallet_outlined),
-                label: 'Profile',
-              ),
-            ],
-            currentIndex: Apkdata.selectedIndex,
-            selectedItemColor: Colors.blue[200],
-            unselectedItemColor: Colors.grey,
-            showSelectedLabels: true,
-            showUnselectedLabels: true,
-            unselectedLabelStyle: const TextStyle(color: Colors.grey),
-            onTap: _onItemTapped,
-          ),
-        );
+            );
+          default:
+            // print(snapshot.connectionState);
+            return const CircularProgressIndicator();
+        }
       },
     );
   }

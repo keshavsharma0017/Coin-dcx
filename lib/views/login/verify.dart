@@ -30,9 +30,9 @@ class _VerifyState extends State<Verify> {
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height - 220,
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         "Check Your Email in Spam",
                         style: TextStyle(

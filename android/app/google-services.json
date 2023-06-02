@@ -29,6 +29,13 @@
             {
               "client_id": "260131588892-ppu1t60k5qjdjn2c7pk2nq0iioma3eb8.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "260131588892-fcbqgbrhautcd10508tg02ucg8r0j0ot.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.coindcx"
+              }
             }
           ]
         }

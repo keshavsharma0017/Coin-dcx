@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coindcx/constant/pop_up.dart';
 import 'package:coindcx/constant/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -122,13 +122,23 @@ class LloginStatepage extends State<Loginpage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                // Navigator.of(context).pushNamed(testRoute);
                 try {
                   await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: _email.text, password: _password.text);
-                  if (!mounted) return;
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, testRoute, (route) => false);
+                    email: _email.text,
+                    password: _password.text,
+                  );
+                  User user = FirebaseAuth.instance.currentUser!;
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .get();
+                  if (user.emailVerified == false) {
+                    if (!mounted) return;
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, testRoute, (route) => false);
+                  } else {
+                    Dialogbox().popup(context, "Email not verified");
+                  }
                 } on FirebaseAuthException catch (e) {
                   if (e.code == "wrong-password") {
                     Dialogbox().popup(context, "password wrong");

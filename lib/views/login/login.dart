@@ -74,7 +74,7 @@ class _StartingpageState extends State<Startingpage> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.of(context).pushNamed(testRoute);
+                            Navigator.of(context).pushNamed(loginRoute);
                           },
                           child: const Text(
                             "Log in",
@@ -94,6 +94,3 @@ class _StartingpageState extends State<Startingpage> {
     );
   }
 }
-
-
-
