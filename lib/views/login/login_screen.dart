@@ -132,10 +132,10 @@ class LloginStatepage extends State<Loginpage> {
                       .collection('users')
                       .doc(user.uid)
                       .get();
-                  if (user.emailVerified == false) {
+                  if (user.emailVerified != false) {
                     if (!mounted) return;
                     Navigator.pushNamedAndRemoveUntil(
-                        context, testRoute, (route) => false);
+                        context, structureRoute, (route) => false);
                   } else {
                     Dialogbox().popup(context, "Email not verified");
                   }

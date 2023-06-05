@@ -1,5 +1,4 @@
 import 'package:coindcx/constant/info.dart';
-import 'package:coindcx/service/api_call.dart';
 import 'package:coindcx/views/home/homepage.dart';
 import 'package:coindcx/views/home/price.dart';
 import 'package:coindcx/views/home/profile.dart';
@@ -27,13 +26,6 @@ class _TestpageState extends State<Testpage> {
   ];
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: dataCall(),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return const CircularProgressIndicator();
-          case ConnectionState.done:
             return Scaffold(
               body: SafeArea(
                 child: IndexedStack(
@@ -72,11 +64,6 @@ class _TestpageState extends State<Testpage> {
                 onTap: _onItemTapped,
               ),
             );
-          default:
-            // print(snapshot.connectionState);
-            return const CircularProgressIndicator();
-        }
-      },
-    );
+        
+      }
   }
-}

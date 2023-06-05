@@ -7,6 +7,8 @@ class Apkdata {
   static int selectedIndex = 0;
   static String pimage='';
   static String pname='';
+  static var list=[];
+  static var filteredList=[];
 }
 
 
@@ -36,6 +38,7 @@ Future<String> uploadImageToStorage() async {
     final downloadUrl = await snapshot.ref.getDownloadURL();
     devtools.log("5");
     devtools.log(downloadUrl);
+    devtools.log("6");
     return downloadUrl;
   } catch (e) {
     devtools.log(e.toString());

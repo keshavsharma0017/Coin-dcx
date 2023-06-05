@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coindcx/constant/info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../constant/info.dart';
 import '../../constant/routes.dart';
+import 'dart:developer' as devtools show log;
 import '../../service/api_call.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -21,18 +22,20 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: const Color.fromARGB(255, 56, 41, 196),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
+        title: const Row(
           children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: NetworkImage(Apkdata.pimage),
-            ),
-            const SizedBox(
+            // CircleAvatar(
+            //   radius: 20,
+            //   backgroundImage: NetworkImage(
+            //     snapshot.data['image_url'].toString(),
+            //   ),
+            // ),
+            SizedBox(
               width: 10,
             ),
             Text(
-              "Hello ${Apkdata.pname}",
-              style: const TextStyle(
+              "Hello ",
+              style: TextStyle(
                   color: Color.fromARGB(255, 45, 121, 243), fontSize: 17),
             ),
           ],
@@ -109,14 +112,21 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Column(
                             children: [
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    devtools.log(Apkdata.list.toString());
+                                    devtools
+                                        .log(Apkdata.filteredList.toString());
+                                    dataCall();
+                                    Navigator.pushNamed(
+                                        context, structureRoute);
+                                  },
                                   icon: const Icon(Icons.group)),
                               const Text(
-                                "Get 50% ",
+                                "Refresh ",
                                 style: TextStyle(fontSize: 14),
                               ),
                               const Text(
-                                "Commission ",
+                                "button",
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],
@@ -195,14 +205,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "${cachedCryptoList[0][index]["name"]}",
+                                    "${Apkdata.list[0][index]["name"]}",
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                   Image.network(
-                                      "${cachedCryptoList[0][index]["image"]}",
+                                      "${Apkdata.list[0][index]["image"]}",
                                       height: 55),
                                 ],
                               ),
@@ -220,13 +230,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
 
-Future<String> returnInfo() async {
-  User user = FirebaseAuth.instance.currentUser!;
-  DocumentSnapshot snapshot =
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-  String username = snapshot.data().toString();
-  print(username);
-  return username;
+  Future<String> returnInfo() async {
+    User user = FirebaseAuth.instance.currentUser!;
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    String username = snapshot.data().toString();
+    devtools.log(username);
+    return username;
+  }
 }

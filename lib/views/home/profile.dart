@@ -33,9 +33,6 @@ class _ProfilepageState extends State<Profilepage> {
               return const Center(child: Text('Loading...'));
             }
             if (snapshot.hasData && snapshot.data != null) {
-              Apkdata.pimage = snapshot.data['image_url'].toString();
-              Apkdata.pname = snapshot.data['name'].toString();
-
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -95,7 +92,7 @@ class _ProfilepageState extends State<Profilepage> {
                               if (index == 1) {
                                 await pickImage();
 
-                                url = await uploadImageToStorage();
+                                var url = await uploadImageToStorage();
 
                                 await FirebaseFirestore.instance
                                     .collection('users')

@@ -1,26 +1,25 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as devtools show log;
+import 'package:coindcx/constant/info.dart';
 import 'package:http/http.dart' as http;
 
 List<dynamic> cachedCryptoList = [];
 
 Future<List> dataCall() async {
-  // log("1");
-
   final response = await http.get(Uri.parse(
       "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"));
-  // log("2");
-  // print(jsonDecode(response.body));
-  // log("3");
-  // log(response.statusCode.toString());
-
   if (response.statusCode == 200) {
-    // log("4");
+    devtools.log('1');
     cachedCryptoList.add(jsonDecode(response.body));
-    // log("5");
-    return cachedCryptoList;
+    devtools.log('2');
+    Apkdata.list.add(jsonDecode(response.body));
+    devtools.log('3');
+    devtools.log(Apkdata.list.toString());
+    devtools.log('4');
+    return Apkdata.list;
+    // return cachedCryptoList;
   } else {
-    log("Error");
+    devtools.log("Error");
     throw Exception("failleddd to loaaaffd");
   }
 }

@@ -6,8 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../constant/info.dart';
 
-// Pick an image from gallery
-
+String? _url;
 
 class Registerpage extends StatefulWidget {
   const Registerpage({super.key});
@@ -67,21 +66,22 @@ class _RegisterpageState extends State<Registerpage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Container(
-                    height: 75,
-                    width: 75,
+                    width: 100,
+                    height: 100,
                     decoration: BoxDecoration(
+                      shape: BoxShape.circle,
                       border: Border.all(
                         color: Colors.grey,
                       ),
-                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: IconButton(
-                      iconSize: 40,
                       onPressed: () async {
                         await pickImage();
-                        url = await uploadImageToStorage();
+                        _url = await uploadImageToStorage();
+                        devtools.log(_url!);
+                        devtools.log("7");
                       },
-                      icon: const Icon(Icons.image_outlined),
+                      icon: const Icon(Icons.add_a_photo_outlined),
                     ),
                   ),
                 ),
@@ -190,42 +190,47 @@ class _RegisterpageState extends State<Registerpage> {
                   var email = _email.text;
                   var password = _password.text;
                   var uname = _uname.text;
-                  devtools.log("$email,$password,$uname,$url");
-                  try {
-                    UserCredential userCredential = await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: email, password: password);
-                    FirebaseAuth.instance.currentUser?.sendEmailVerification();
-                    User user = userCredential.user!;
-                    await FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(user.uid)
-                        .set({
-                      'name': uname,
-                      'image_url': url,
-                    });
-
-                    if (!mounted) return;
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, verifyRoute, (route) => false);
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == "email-already-in-use") {
-                      Dialogbox().popup(context, "Email Already Exists");
-                      devtools.log("Email Already Exists");
-                    } else if (e.code == "invalid-email") {
-                      Dialogbox()
-                          .popup(context, "Invalid email/format Not Correct");
-                      devtools.log("Invalid email/format Not Correct");
-                    } else if (e.code == "weak-password") {
-                      Dialogbox().popup(context, "Weak Password");
-                      devtools.log("Weak Password");
-                    } else {
-                      Dialogbox().popup(context, "Something went wrong");
-                      devtools.log(e.code);
+                  devtools.log("$email,$password,$uname,$_url");
+                  if (_url != ''){
+                    try {
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .createUserWithEmailAndPassword(
+                              email: email, password: password);
+                      FirebaseAuth.instance.currentUser
+                          ?.sendEmailVerification();
+                      User user = userCredential.user!;
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.uid)
+                          .set({
+                        'name': uname,
+                        'image_url': _url,
+                      });
+                      if (!mounted) return;
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, verifyRoute, (route) => false);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == "email-already-in-use") {
+                        Dialogbox().popup(context, "Email Already Exists");
+                        devtools.log("Email Already Exists");
+                      } else if (e.code == "invalid-email") {
+                        Dialogbox()
+                            .popup(context, "Invalid email/format Not Correct");
+                        devtools.log("Invalid email/format Not Correct");
+                      } else if (e.code == "weak-password") {
+                        Dialogbox().popup(context, "Weak Password");
+                        devtools.log("Weak Password");
+                      } else {
+                        Dialogbox().popup(context, "Something went wrong");
+                        devtools.log(e.code);
+                      }
+                    } catch (e) {
+                      Dialogbox().popup(context, e.toString());
+                      devtools.log(e.toString());
                     }
-                  } catch (e) {
-                    Dialogbox().popup(context, e.toString());
-                    devtools.log(e.toString());
+                  } else {
+                    Dialogbox().popup(context, "Please select an image");
                   }
                 },
                 style: ElevatedButton.styleFrom(

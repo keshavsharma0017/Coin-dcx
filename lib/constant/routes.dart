@@ -1,5 +1,6 @@
 const homeRoute = '/home/';
 const startRoute = '/start/';
+const structureRoute = '/structure/';
 const loginRoute = '/login/';
 const registerRoute = '/register/';
 const verifyRoute = '/verify/';
