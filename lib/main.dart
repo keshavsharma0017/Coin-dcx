@@ -16,7 +16,6 @@ import 'views/home/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -65,8 +64,12 @@ class _InitializeState extends State<Initialize> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               final user = FirebaseAuth.instance.currentUser;
-              if (user?.emailVerified ?? false) {
-                return const Testpage();
+              if (user != null) {
+                if (user.emailVerified) {
+                  return const Structure();
+                } else {
+                  return const Loginpage();
+                }
               } else {
                 return const Splash();
               }

@@ -14,12 +14,12 @@ Future<List> dataCall() async {
     devtools.log('2');
     Apkdata.list.add(jsonDecode(response.body));
     devtools.log('3');
-    devtools.log(Apkdata.list.toString());
+    // devtools.log(Apkdata.list.toString());
     devtools.log('4');
     return Apkdata.list;
     // return cachedCryptoList;
   } else {
     devtools.log("Error");
-    throw Exception("failleddd to loaaaffd");
+    throw Exception("Failed to load ${response.statusCode}");
   }
 }

@@ -40,25 +40,17 @@ class _ProfilepageState extends State<Profilepage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(
                         8.0,
-                        8.0,
+                        32.0,
                         8.0,
                         0.0,
                       ),
                       child: Center(
-                        child: CircleAvatar(
-                          radius: 90,
-                          foregroundImage: NetworkImage(
-                            snapshot.data['image_url'].toString(),
-                          ),
-                          onForegroundImageError: (exception, stackTrace) =>
-                              const CircularProgressIndicator(),
-                          onBackgroundImageError: (exception, stackTrace) =>
-                              const CircularProgressIndicator(),
-                          backgroundImage: NetworkImage(
-                            snapshot.data['image_url'].toString(),
-                          ),
+                          child: CircleAvatar(
+                        radius: 90,
+                        backgroundImage: NetworkImage(
+                          snapshot.data['image_url'].toString(),
                         ),
-                      ),
+                      )),
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.1,
@@ -122,4 +114,4 @@ class _ProfilepageState extends State<Profilepage> {
   }
 }
 
-List<String> _list = ["Account", "Add/Update Pfp", "Settings", "Logout"];
+List<String> _list = ["Account", "Add/Update Pics", "Settings", "Logout"];

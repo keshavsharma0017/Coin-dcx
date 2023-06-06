@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constant/info.dart';
-import '../../service/api_call.dart';
+import 'dart:developer' as devtools show log;
 
 class SearchData extends ChangeNotifier {
   String _searchText = "";
@@ -31,9 +31,14 @@ class SearchInheritedNotifier extends InheritedNotifier<SearchData> {
   }
 }
 
-class Pricepage extends StatelessWidget {
+class Pricepage extends StatefulWidget {
   const Pricepage({Key? key}) : super(key: key);
 
+  @override
+  State<Pricepage> createState() => _PricepageState();
+}
+
+class _PricepageState extends State<Pricepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +64,9 @@ class Pricepage extends StatelessWidget {
                           children: [
                             TextFormField(
                               onFieldSubmitted: (value) {
+                                devtools.log(value);
                                 searchData.searchText = value;
+                                Apkdata.filteredList = search(value);
                               },
                               style: const TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 18),
@@ -77,9 +84,7 @@ class Pricepage extends StatelessWidget {
                               height: MediaQuery.of(context).size.height - 150,
                               child: ListView.builder(
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: Apkdata.filteredList.length == 0
-                                    ? Apkdata.list[0].length
-                                    : Apkdata.filteredList.length,
+                                itemCount: Apkdata.filteredList.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.only(
@@ -126,14 +131,14 @@ class Pricepage extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${Apkdata.list[0][index]['name']}",
+                                                  "${Apkdata.filteredList[index]['name']}",
                                                   style: const TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
                                                 Text(
-                                                  "\$ ${Apkdata.list[0][index]['current_price']}",
+                                                  "\$ ${Apkdata.filteredList[index]['current_price']}",
                                                   style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
@@ -142,7 +147,7 @@ class Pricepage extends StatelessWidget {
                                               ],
                                             ),
                                             Image.network(
-                                                "${Apkdata.list[0][index]['image']}")
+                                                "${Apkdata.filteredList[index]['image']}")
                                           ],
                                         ),
                                       ),
@@ -166,9 +171,10 @@ class Pricepage extends StatelessWidget {
   }
 }
 
-List<dynamic> search(String val) {
+List<Map<String, dynamic>> search(String val) {
+  devtools.log(val);
   if (val.isNotEmpty) {
-    Apkdata.filteredList = Apkdata.list[0]
+    return Apkdata.filteredList = Apkdata.list[0]
         .where(
           (element) => element["id"].toString().toLowerCase().contains(
                 val.toLowerCase(),
@@ -176,7 +182,11 @@ List<dynamic> search(String val) {
         )
         .toList();
   } else {
-    Apkdata.filteredList = Apkdata.list;
+    // devtools.log(Apkdata.list[0].length.toString());
+    // devtools.log(Apkdata.list[0].toString());
+    // Apkdata.filteredList = Apkdata.list;
   }
-  return Apkdata.filteredList;
+  // devtools.log(Apkdata.list[0].length.toString());
+  // devtools.log(Apkdata.list[0].toString());
+  return Apkdata.list[0];
 }
