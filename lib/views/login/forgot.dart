@@ -12,10 +12,12 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
   late final TextEditingController _emaill;
+  bool _sent = false;
 
   @override
   void initState() {
     _emaill = TextEditingController();
+    _sent = false;
     super.initState();
   }
 
@@ -68,11 +70,16 @@ class _ForgetPasswordState extends State<ForgetPassword> {
               onPressed: () async {
                 try {
                   await FirebaseAuth.instance
-                      .sendPasswordResetEmail(email: _emaill.toString());
+                      .sendPasswordResetEmail(email: _emaill.text);
+                  if (!mounted) return;
+                  setState(() {
+                    _sent = true;
+                  });
+                  Dialogbox().popup(context, "Verification mail sent");
                 } on FirebaseAuthException catch (e) {
                   if (e.code == "invalid-email") {
                     Dialogbox().popup(context, "Invalid Email");
-                    log("invaild email:${e.code}");
+                    log("Error: ${e.code}");
                   } else {
                     Dialogbox().popup(context, "Something went wrong");
                     log(e.code);
@@ -85,6 +92,18 @@ class _ForgetPasswordState extends State<ForgetPassword> {
               child: const Text(
                 "Send",
                 style: TextStyle(fontSize: 15),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Visibility(
+                visible: _sent,
+                child: const Center(
+                  child: Text(
+                    "Go Back and Login Again",
+                    style: TextStyle(fontSize: 14, color: Colors.green),
+                  ),
+                ),
               ),
             )
           ],

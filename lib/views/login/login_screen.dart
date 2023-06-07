@@ -104,12 +104,8 @@ class LloginStatepage extends State<Loginpage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextButton(
-                    onPressed: () async {
-                      // var email = _email.toString();
-                      // await FirebaseAuth.instance
-                      //     .sendPasswordResetEmail(email: email);
-                      // if (!mounted) return;
-                      Navigator.pushNamed(context, forgotRoute);
+                    onPressed: () {
+                          Navigator.pushNamed(context, forgotRoute);
                     },
                     child: const Text(
                       "Forgot Password",
@@ -137,7 +133,7 @@ class LloginStatepage extends State<Loginpage> {
                     Navigator.pushNamedAndRemoveUntil(
                         context, structureRoute, (route) => false);
                   } else {
-                    // ignore: use_build_context_synchronously
+                    if (!mounted) return;
                     Dialogbox().popup(context, "Email not verified");
                   }
                 } on FirebaseAuthException catch (e) {
