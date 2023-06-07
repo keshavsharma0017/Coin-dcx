@@ -18,52 +18,45 @@ class _TestpageState extends State<Testpage> {
     });
   }
 
-  var screens = [
-    const MyHomePage(),
-    const Pricepage(),
-    const Pricepage(),
-    const Pricepage()
-  ];
   @override
   Widget build(BuildContext context) {
-            return Scaffold(
-              body: SafeArea(
-                child: IndexedStack(
-                  index: Apkdata.selectedIndex,
-                  children: const [
-                    MyHomePage(),
-                    Pricepage(),
-                    Profilepage(),
-                  ],
-                ),
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                selectedLabelStyle: TextStyle(color: Colors.blue[200]),
-                selectedIconTheme: IconThemeData(color: Colors.blue[200]),
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.area_chart_rounded),
-                    label: 'Prices',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.account_balance_wallet_outlined),
-                    label: 'Profile',
-                  ),
-                ],
-                currentIndex: Apkdata.selectedIndex,
-                selectedItemColor: Colors.blue[200],
-                unselectedItemColor: Colors.grey,
-                showSelectedLabels: true,
-                showUnselectedLabels: true,
-                unselectedLabelStyle: const TextStyle(color: Colors.grey),
-                onTap: _onItemTapped,
-              ),
-            );
-        
-      }
+    return Scaffold(
+      body: SafeArea(
+        child: IndexedStack(
+          index: Apkdata.selectedIndex,
+          children: [
+            const MyHomePage(),
+            Pricepage1(dataList: Apkdata.list[0]),
+            const Profilepage(),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedLabelStyle: TextStyle(color: Colors.blue[200]),
+        selectedIconTheme: IconThemeData(color: Colors.blue[200]),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.area_chart_rounded),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: Apkdata.selectedIndex,
+        selectedItemColor: Colors.blue[200],
+        unselectedItemColor: Colors.grey,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        unselectedLabelStyle: const TextStyle(color: Colors.grey),
+        onTap: _onItemTapped,
+      ),
+    );
   }
+}

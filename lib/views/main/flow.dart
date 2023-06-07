@@ -1,5 +1,6 @@
 import 'dart:developer' as devtools show log;
 import 'package:coindcx/constant/info.dart';
+import 'package:coindcx/constant/routes.dart';
 import 'package:coindcx/service/api_call.dart';
 import 'package:coindcx/views/main/test.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +44,15 @@ class _StructureState extends State<Structure> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircularProgressIndicator(),
-              Text("Error: ${snapshot.error}")
+              const CircularProgressIndicator(
+                backgroundColor: Colors.white,
+              ),
+              Text("Error: ${snapshot.error} \n   Try again after Few minutes"),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, structureRoute);
+                  },
+                  child: const Text('Refresh')),
             ],
           ));
         }

@@ -137,6 +137,7 @@ class LloginStatepage extends State<Loginpage> {
                     Navigator.pushNamedAndRemoveUntil(
                         context, structureRoute, (route) => false);
                   } else {
+                    // ignore: use_build_context_synchronously
                     Dialogbox().popup(context, "Email not verified");
                   }
                 } on FirebaseAuthException catch (e) {

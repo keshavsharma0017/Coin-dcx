@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../constant/info.dart';
 import '../../constant/routes.dart';
 import 'dart:developer' as devtools show log;
-import '../../service/api_call.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -64,91 +63,74 @@ class _MyHomePageState extends State<MyHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                          // height: 500,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    FirebaseAuth.instance.signOut();
-                                    Navigator.of(context).pushNamed(startRoute);
-                                  },
-                                  icon: const Icon(Icons.monetization_on)),
-                              const Text(
-                                "Add Funds ",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              const Text(
-                                "\$0 ",
-                                style: TextStyle(fontSize: 14),
-                              )
-                            ],
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  FirebaseAuth.instance.signOut();
+                                  Navigator.of(context).pushNamed(startRoute);
+                                },
+                                icon: const Icon(Icons.monetization_on)),
+                            const Text(
+                              "Add Funds ",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            const Text(
+                              "\$0 ",
+                              style: TextStyle(fontSize: 14),
+                            )
+                          ],
                         ),
-                        Container(
-                          // height: 500,
-                          child: Column(
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    returnInfo();
-                                  },
-                                  icon: const Icon(
-                                      Icons.shopping_basket_rounded)),
-                              const Text(
-                                "Instant",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              const Text(
-                                " Buy",
-                                style: TextStyle(fontSize: 14),
-                              )
-                            ],
-                          ),
+                        Column(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  returnInfo();
+                                },
+                                icon:
+                                    const Icon(Icons.shopping_basket_rounded)),
+                            const Text(
+                              "Instant",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            const Text(
+                              " Buy",
+                              style: TextStyle(fontSize: 14),
+                            )
+                          ],
                         ),
-                        Container(
-                          // height: 500,
-                          child: Column(
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    devtools.log(Apkdata.list.toString());
-                                    devtools
-                                        .log(Apkdata.filteredList.toString());
-                                    dataCall();
-                                    Navigator.pushNamed(
-                                        context, structureRoute);
-                                  },
-                                  icon: const Icon(Icons.group)),
-                              const Text(
-                                "Refresh ",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              const Text(
-                                "button",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
+                        Column(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, structureRoute);
+                                },
+                                icon: const Icon(Icons.group)),
+                            const Text(
+                              "Refresh ",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            const Text(
+                              "button",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
                         ),
-                        Container(
-                          // height: 500,
-                          child: Column(
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.auto_graph_rounded)),
-                              const Text(
-                                "Crypto ",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              const Text(
-                                "SIP",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
+                        Column(
+                          children: [
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.auto_graph_rounded)),
+                            const Text(
+                              "Crypto ",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            const Text(
+                              "SIP",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
                         ),
                       ],
                     ),

@@ -26,7 +26,7 @@ class _SettingpageState extends State<Settingpage> {
         children: [
           Center(
             child: TextButton(
-              onPressed: () async { 
+              onPressed: () async {
                 await FirebaseAuth.instance.signOut();
                 if (!mounted) {}
                 Navigator.of(context)
