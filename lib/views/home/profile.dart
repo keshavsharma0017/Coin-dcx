@@ -15,6 +15,7 @@ class Profilepage extends StatefulWidget {
 }
 
 class _ProfilepageState extends State<Profilepage> {
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,21 +38,33 @@ class _ProfilepageState extends State<Profilepage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        8.0,
-                        32.0,
-                        8.0,
-                        0.0,
-                      ),
-                      child: Center(
-                          child: CircleAvatar(
-                        radius: 90,
-                        backgroundImage: NetworkImage(
-                          snapshot.data['image_url'].toString(),
-                        ),
-                      )),
+                    const SizedBox(
+                      height: 180,
+                      child: Center(child: Text("Image")),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.fromLTRB(
+                    //     8.0,
+                    //     32.0,
+                    //     8.0,
+                    //     0.0,
+                    //   ),
+                    //   child: loading
+                    //       ? const SizedBox(
+                    //           height: 180,
+                    //           child: Center(
+                    //             child: CircularProgressIndicator(),
+                    //           ),
+                    //         )
+                    //       : Center(
+                    //           child: CircleAvatar(
+                    //           radius: 90,
+                    //           backgroundImage: NetworkImage(
+                    //             Apkdata.pimage,
+                    //           ),
+                    //         )),
+                    // ),
+                    //NAME
                     Container(
                       height: MediaQuery.of(context).size.height * 0.1,
                       decoration: const BoxDecoration(
@@ -59,7 +72,7 @@ class _ProfilepageState extends State<Profilepage> {
                       ),
                       child: Center(
                         child: Text(
-                          "Hey , ${snapshot.data['name'].toString()}",
+                          "Hey , ${Apkdata.pname}",
                           style: const TextStyle(
                               fontSize: 27, fontWeight: FontWeight.w500),
                         ),
@@ -68,6 +81,7 @@ class _ProfilepageState extends State<Profilepage> {
                     const SizedBox(
                       height: 15,
                     ),
+                    //LIST OF OPTIONS
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
                       child: ListView.builder(
@@ -79,18 +93,40 @@ class _ProfilepageState extends State<Profilepage> {
                             onTap: () async {
                               if (index == 3) {
                                 FirebaseAuth.instance.signOut();
-                                Navigator.pushNamed(context, startRoute);
+                                setState(() {
+                                  Apkdata.pimage = Apkdata.pname = '';
+                                  Apkdata.temppimage = Apkdata.pname = '';
+                                });
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  startRoute,
+                                  (route) => false,
+                                );
                               }
-                              if (index == 1) {
-                                await pickImage();
+                              // if (index == 1) {
+                              //   await pickImage();
+                              //   setState(() {
+                              //     loading = true;
+                              //   });
+                              //   var url = await uploadImageToStorage();
 
-                                var url = await uploadImageToStorage();
-
-                                await FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(auth.currentUser!.uid)
-                                    .update({'image_url': url});
-                              }
+                              //   await FirebaseFirestore.instance
+                              //       .collection('users')
+                              //       .doc(auth.currentUser!.uid)
+                              //       .update({'image_url': url});
+                              //   setState(
+                              //     () {
+                              //       if (url != null) {
+                              //         Apkdata.pimage = url.toString();
+                              //         Apkdata.temppimage = url.toString();
+                              //         loading = false;
+                              //       } else {
+                              //         Apkdata.pimage = "";
+                              //         loading = false;
+                              //       }
+                              //     },
+                              //   );
+                              // }
                             },
                             title: Center(
                                 child: Text(

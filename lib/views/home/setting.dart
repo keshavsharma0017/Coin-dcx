@@ -28,7 +28,7 @@ class _SettingpageState extends State<Settingpage> {
             child: TextButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                if (!mounted) {}
+                if (!mounted) return;
                 Navigator.of(context)
                     .pushNamedAndRemoveUntil(startRoute, (route) => false);
               },

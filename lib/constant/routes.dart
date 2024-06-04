@@ -6,4 +6,4 @@ const registerRoute = '/register/';
 const verifyRoute = '/verify/';
 const forgotRoute = '/forgot/';
 const settingRoute = '/setting/';
-const testRoute = '/test/';
+const infoRoute = '/info/';

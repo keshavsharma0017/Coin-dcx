@@ -16,6 +16,7 @@ class LloginStatepage extends State<Loginpage> {
   late final TextEditingController _email;
   late final TextEditingController _password;
   late bool _passwordVisible;
+  bool loading = false;
 
   @override
   void initState() {
@@ -105,7 +106,7 @@ class LloginStatepage extends State<Loginpage> {
               children: [
                 TextButton(
                     onPressed: () {
-                          Navigator.pushNamed(context, forgotRoute);
+                      Navigator.pushNamed(context, forgotRoute);
                     },
                     child: const Text(
                       "Forgot Password",
@@ -118,7 +119,12 @@ class LloginStatepage extends State<Loginpage> {
             ),
             ElevatedButton(
               onPressed: () async {
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //     structureRoute, (Route<dynamic> route) => false);
                 try {
+                  setState(() {
+                    loading = true;
+                  });
                   await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: _email.text,
                     password: _password.text,
@@ -130,13 +136,22 @@ class LloginStatepage extends State<Loginpage> {
                       .get();
                   if (user.emailVerified != false) {
                     if (!mounted) return;
+                    setState(() {
+                      loading = false;
+                    });
                     Navigator.pushNamedAndRemoveUntil(
                         context, structureRoute, (route) => false);
                   } else {
                     if (!mounted) return;
+                    setState(() {
+                      loading = false;
+                    });
                     Dialogbox().popup(context, "Email not verified");
                   }
                 } on FirebaseAuthException catch (e) {
+                  setState(() {
+                    loading = false;
+                  });
                   if (e.code == "wrong-password") {
                     Dialogbox().popup(context, "password wrong");
                     log("password wrong");
@@ -154,6 +169,9 @@ class LloginStatepage extends State<Loginpage> {
                     log(e.code);
                   }
                 } catch (e) {
+                  setState(() {
+                    loading = false;
+                  });
                   Dialogbox().popup(context, e.toString());
                   log("Error2 $e");
                 }
@@ -161,10 +179,15 @@ class LloginStatepage extends State<Loginpage> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 41, 85, 196),
                   minimumSize: Size(MediaQuery.of(context).size.width, 48)),
-              child: const Text(
-                "Continue",
-                style: TextStyle(fontSize: 15),
-              ),
+              child: loading
+                  ? const CircularProgressIndicator()
+                  : const Text(
+                      "Continue",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                    ),
             )
           ],
         ),

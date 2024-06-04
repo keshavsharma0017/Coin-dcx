@@ -4,6 +4,7 @@ import 'package:coindcx/constant/pop_up.dart';
 import 'package:coindcx/constant/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../constant/info.dart';
 
 String? _url;
@@ -20,6 +21,8 @@ class _RegisterpageState extends State<Registerpage> {
   late final TextEditingController _uname;
   late final TextEditingController _password;
   late bool _passwordVisible;
+  bool loading = false;
+  bool loadingdone = false;
 
   @override
   void initState() {
@@ -62,37 +65,82 @@ class _RegisterpageState extends State<Registerpage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Center(
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    child: IconButton(
-                      onPressed: () async {
-                        await pickImage();
-                        _url = await uploadImageToStorage();
-                        devtools.log(_url!);
-                        devtools.log("7");
-                      },
-                      icon: const Icon(Icons.add_a_photo_outlined),
-                    ),
-                  ),
-                ),
-              ),
+              // loading
+              //     ? const Center(
+              //         child: CircularProgressIndicator(),
+              //       )
+              //     : loadingdone
+              //         ? Padding(
+              //             padding: const EdgeInsets.all(16.0),
+              //             child: Center(
+              //               child: Container(
+              //                 width: 100,
+              //                 height: 100,
+              //                 decoration: BoxDecoration(
+              //                   shape: BoxShape.circle,
+              //                   border: Border.all(
+              //                     color: Colors.grey,
+              //                   ),
+              //                 ),
+              //                 child: GestureDetector(
+              //                   child: Image.network(_url!),
+              //                   onTap: () async {
+              //                     await pickImage();
+              //                     setState(() {
+              //                       loading = true;
+              //                     });
+              //                     _url = await uploadImageToStorage();
+              //                     devtools.log(_url!);
+              //                     devtools.log("7");
+              //                     setState(() {
+              //                       loading = false;
+              //                       loadingdone = true;
+              //                     });
+              //                   },
+              //                 ),
+              //               ),
+              //             ),
+              //           )
+              //         : Padding(
+              //             padding: const EdgeInsets.all(16.0),
+              //             child: Center(
+              //               child: Container(
+              //                 width: 100,
+              //                 height: 100,
+              //                 decoration: BoxDecoration(
+              //                   shape: BoxShape.circle,
+              //                   border: Border.all(
+              //                     color: Colors.grey,
+              //                   ),
+              //                 ),
+              //                 child: IconButton(
+              //                   onPressed: () async {
+              //                     await pickImage();
+              //                     // final ImagePicker picker = await ImagePicker();
+              //                     // final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+              //                     setState(() {
+              //                       loading = true;
+              //                     });
+              //                     _url = await uploadImageToStorage();
+              //                     devtools.log(_url!);
+              //                     devtools.log("7");
+              //                     setState(() {
+              //                       loading = false;
+              //                       loadingdone = true;
+              //                     });
+              //                   },
+              //                   icon: const Icon(Icons.add_a_photo_outlined),
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
               TextFormField(
                 controller: _uname,
                 autocorrect: false,
                 enableSuggestions: false,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.fromLTRB(12, 15.0, 12, 15.0),
-                  hintText: "Full name (as per PAN)",
+                  hintText: "Full name",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -191,55 +239,61 @@ class _RegisterpageState extends State<Registerpage> {
                   var password = _password.text;
                   var uname = _uname.text;
                   devtools.log("$email,$password,$uname,$_url");
-                  if (_url != ''){
-                    try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .createUserWithEmailAndPassword(
-                              email: email, password: password);
-                      FirebaseAuth.instance.currentUser
-                          ?.sendEmailVerification();
-                      User user = userCredential.user!;
-                      await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user.uid)
-                          .set({
-                        'name': uname,
-                        'image_url': _url,
-                      });
-                      if (!mounted) return;
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, verifyRoute, (route) => false);
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == "email-already-in-use") {
-                        Dialogbox().popup(context, "Email Already Exists");
-                        devtools.log("Email Already Exists");
-                      } else if (e.code == "invalid-email") {
-                        Dialogbox()
-                            .popup(context, "Invalid email/format Not Correct");
-                        devtools.log("Invalid email/format Not Correct");
-                      } else if (e.code == "weak-password") {
-                        Dialogbox().popup(context, "Weak Password");
-                        devtools.log("Weak Password");
-                      } else {
-                        Dialogbox().popup(context, "Something went wrong");
-                        devtools.log(e.code);
-                      }
-                    } catch (e) {
-                      Dialogbox().popup(context, e.toString());
-                      devtools.log(e.toString());
+
+                  try {
+                    setState(() {
+                      loading = true;
+                    });
+                    UserCredential userCredential = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: email, password: password);
+                    FirebaseAuth.instance.currentUser?.sendEmailVerification();
+                    User user = userCredential.user!;
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(user.uid)
+                        .set({
+                      'name': uname,
+                      'image_url': _url,
+                    });
+                    if (!mounted) return;
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, verifyRoute, (route) => false);
+                  } on FirebaseAuthException catch (e) {
+                    setState(() {
+                      loading = false;
+                    });
+                    if (e.code == "email-already-in-use") {
+                      Dialogbox().popup(context, "Email Already Exists");
+                      devtools.log("Email Already Exists");
+                    } else if (e.code == "invalid-email") {
+                      Dialogbox()
+                          .popup(context, "Invalid email/format Not Correct");
+                      devtools.log("Invalid email/format Not Correct");
+                    } else if (e.code == "weak-password") {
+                      Dialogbox().popup(context, "Weak Password");
+                      devtools.log("Weak Password");
+                    } else {
+                      Dialogbox().popup(context, "Something went wrong");
+                      devtools.log(e.code);
                     }
-                  } else {
-                    Dialogbox().popup(context, "Please select an image");
+                  } catch (e) {
+                    setState(() {
+                      loading = false;
+                    });
+                    Dialogbox().popup(context, e.toString());
+                    devtools.log(e.toString());
                   }
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 41, 85, 196),
                     minimumSize: Size(MediaQuery.of(context).size.width, 48)),
-                child: const Text(
-                  "Continue",
-                  style: TextStyle(fontSize: 15),
-                ),
+                child: loading
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        "Continue",
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
               ),
             ],
           ),

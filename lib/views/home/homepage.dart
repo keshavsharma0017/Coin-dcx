@@ -18,23 +18,23 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 56, 41, 196),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Row(
+        title: Row(
           children: [
             // CircleAvatar(
             //   radius: 20,
             //   backgroundImage: NetworkImage(
-            //     snapshot.data['image_url'].toString(),
+            //     Apkdata.temppimage.toString(),
             //   ),
             // ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Text(
-              "Hello ",
-              style: TextStyle(
+              "Hello ${Apkdata.pname}",
+              style: const TextStyle(
                   color: Color.fromARGB(255, 45, 121, 243), fontSize: 17),
             ),
           ],
@@ -44,10 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Image.asset("assets/st1.jpeg"),
+              ClipOval(
+                child: Image.asset(
+                  "assets/st1.jpeg",
+                ),
               ),
               Container(
                 height: MediaQuery.of(context).size.height,
@@ -104,15 +106,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, structureRoute);
+                                  // Navigator.pushNamed(context, structureRoute);
                                 },
                                 icon: const Icon(Icons.group)),
                             const Text(
-                              "Refresh ",
+                              "Customer ",
                               style: TextStyle(fontSize: 14),
                             ),
                             const Text(
-                              "button",
+                              "Buy",
                               style: TextStyle(fontSize: 14),
                             ),
                           ],
@@ -148,55 +150,201 @@ class _MyHomePageState extends State<MyHomePage> {
                         physics: const BouncingScrollPhysics(),
                         itemCount: 10,
                         itemBuilder: (context, index) {
-                          // print("10000");
-                          // print("${cachedCryptoList[0][index]["name"]}");
-                          // log(cachedCryptoList[0][index]["name"]);
-                          // print("2");
-                          // log(cachedCryptoList[0][index]["price"]);
-                          // print("3");
-                          // log(cachedCryptoList[0][index]["image"]);
-                          // print("4");
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5.0,
-                              bottom: 10.0,
-                              left: 5.0,
-                              right: 5.0,
-                            ),
-                            child: Container(
-                              width: 120,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade400,
-                                    blurRadius: 5,
-                                    offset: const Offset(5, 5),
-                                  ),
-                                  const BoxShadow(
-                                    color: Colors.white,
-                                    blurRadius: 1,
-                                    offset: Offset(-1, -1),
-                                  ),
-                                ],
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(16),
+                          return GestureDetector(
+                            onTap: () async {
+                              // devtools.log("${Apkdata.list[0][index]}");
+                              // devtools
+                              //     .log("${Apkdata.list[0][index].runtimeType}");
+                              setState(() {
+                                Apkdata.searchList = Apkdata.list[0][index];
+                              });
+                              Navigator.pushNamed(context, infoRoute);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 5.0,
+                                bottom: 10.0,
+                                left: 5.0,
+                                right: 5.0,
                               ),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "${Apkdata.list[0][index]["name"]}",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                              child: Container(
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade400,
+                                      blurRadius: 5,
+                                      offset: const Offset(5, 5),
                                     ),
-                                  ),
-                                  Image.network(
-                                      "${Apkdata.list[0][index]["image"]}",
-                                      height: 55),
-                                ],
+                                    const BoxShadow(
+                                      color: Colors.white,
+                                      blurRadius: 1,
+                                      offset: Offset(-1, -1),
+                                    ),
+                                  ],
+                                  color: Colors.lightBlue[50],
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${Apkdata.list[0][index]["name"]}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Image.network(
+                                        "${Apkdata.list[0][index]["image"]}",
+                                        height: 55),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "On High Demand",
+                        style: TextStyle(color: Colors.grey[600], fontSize: 24),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          index = index + 10;
+                          return GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                Apkdata.searchList = Apkdata.list[0][index];
+                              });
+                              Navigator.pushNamed(context, infoRoute);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 5.0,
+                                bottom: 10.0,
+                                left: 5.0,
+                                right: 5.0,
+                              ),
+                              child: Container(
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade400,
+                                      blurRadius: 5,
+                                      offset: const Offset(5, 5),
+                                    ),
+                                    const BoxShadow(
+                                      color: Colors.white,
+                                      blurRadius: 1,
+                                      offset: Offset(-1, -1),
+                                    ),
+                                  ],
+                                  color: Colors.lightBlue[50],
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${Apkdata.list[0][index]["name"]}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Image.network(
+                                        "${Apkdata.list[0][index]["image"]}",
+                                        height: 55),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "On low Demand",
+                        style: TextStyle(color: Colors.grey[600], fontSize: 24),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          index = index + 20;
+                          return GestureDetector(
+                            onTap: () async {
+                              // devtools.log("${Apkdata.list[0][index]}");
+                              // devtools
+                              //     .log("${Apkdata.list[0][index].runtimeType}");
+                              setState(() {
+                                Apkdata.searchList = Apkdata.list[0][index];
+                              });
+                              Navigator.pushNamed(context, infoRoute);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 5.0,
+                                bottom: 10.0,
+                                left: 5.0,
+                                right: 5.0,
+                              ),
+                              child: Container(
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade400,
+                                      blurRadius: 5,
+                                      offset: const Offset(5, 5),
+                                    ),
+                                    const BoxShadow(
+                                      color: Colors.white,
+                                      blurRadius: 1,
+                                      offset: Offset(-1, -1),
+                                    ),
+                                  ],
+                                  color: Colors.lightBlue[50],
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${Apkdata.list[0][index]["name"]}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Image.network(
+                                        "${Apkdata.list[0][index]["image"]}",
+                                        height: 55),
+                                  ],
+                                ),
                               ),
                             ),
                           );

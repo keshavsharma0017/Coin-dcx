@@ -5,16 +5,30 @@ import 'package:coindcx/views/home/profile.dart';
 import 'package:flutter/material.dart';
 
 class Testpage extends StatefulWidget {
-  const Testpage({super.key});
+  final String userName;
+  final String userImage;
+  const Testpage({
+    super.key,
+    required this.userName,
+    required this.userImage,
+  });
 
   @override
   State<Testpage> createState() => _TestpageState();
 }
 
 class _TestpageState extends State<Testpage> {
+  @override
+  void initState() {
+    Apkdata.pname = widget.userName;
+    Apkdata.temppimage = widget.userImage;
+    super.initState();
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       Apkdata.selectedIndex = index;
+      Apkdata.temppimage = Apkdata.pimage;
     });
   }
 

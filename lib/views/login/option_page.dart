@@ -19,25 +19,30 @@ class _StartingpageState extends State<Startingpage> {
           color: Colors.white,
           child: Stack(
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                // mainAxisSize: MainAxisSize.max,
-                children: [
-                  Image.asset(
+              Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxHeight: 500,
+                    maxWidth: 500,
+                    minHeight: 50,
+                    minWidth: 50,
+                  ),
+                  child: Image.asset(
                     "assets/splash.png",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    // height: MediaQuery.of(context).size.height / 2.5,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
+                ),
               ),
-              const Positioned(
-                child: Center(
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                  ),
                   child: Text(
-                    "Welcome to The \n CoinDCX App",
+                    "Welcome to The CoinDCX App Clone",
+                    softWrap: true,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 30,
@@ -45,8 +50,8 @@ class _StartingpageState extends State<Startingpage> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
+              Align(
+                alignment: Alignment.bottomCenter,
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -70,7 +75,10 @@ class _StartingpageState extends State<Startingpage> {
                                 minimumSize: const Size(300, 50),
                                 backgroundColor:
                                     const Color.fromARGB(255, 41, 83, 190)),
-                            child: const Text("Create account for free")),
+                            child: const Text(
+                              "Create account for free",
+                              style: TextStyle(color: Colors.white),
+                            )),
                       ),
                       TextButton(
                           onPressed: () {

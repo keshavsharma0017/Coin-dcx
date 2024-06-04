@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../constant/info.dart';
+import '../../constant/routes.dart';
+
 class Pricepage1 extends StatefulWidget {
   final List<dynamic>? dataList;
   const Pricepage1({Key? key, required this.dataList}) : super(key: key);
@@ -46,6 +49,7 @@ class _Pricepage1State extends State<Pricepage1> {
               children: [
                 Column(
                   children: [
+                    //search Bar
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: TextFormField(
@@ -61,6 +65,7 @@ class _Pricepage1State extends State<Pricepage1> {
                         ),
                       ),
                     ),
+                    //list view
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height - 180,
@@ -71,67 +76,76 @@ class _Pricepage1State extends State<Pricepage1> {
                               itemCount: filteredList!.length,
                               itemBuilder: (context, index) {
                                 final item = filteredList![index];
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10.0,
-                                    bottom: 0,
-                                    left: 8,
-                                    right: 8,
-                                  ),
-                                  child: Container(
-                                    height: 90,
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.shade400,
-                                          blurRadius: 5,
-                                          offset: const Offset(5, 5),
-                                        ),
-                                        const BoxShadow(
-                                          color: Colors.white,
-                                          blurRadius: 1,
-                                          offset: Offset(-1, -1),
-                                        ),
-                                      ],
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(16),
+                                return GestureDetector(
+                                  onTap: () async {
+                                    setState(() {
+                                      Apkdata.searchList = item;
+                                    });
+                                    Navigator.pushNamed(context, infoRoute);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 10.0,
+                                      bottom: 0,
+                                      left: 8,
+                                      right: 8,
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                        16.0,
-                                        16.0,
-                                        16.0,
-                                        16.0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${item['name']}",
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Text(
-                                                "\$ ${item['current_price']}",
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
+                                    child: Container(
+                                      height: 90,
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade400,
+                                            blurRadius: 5,
+                                            offset: const Offset(5, 5),
                                           ),
-                                          Image.network("${item['image']}")
+                                          const BoxShadow(
+                                            color: Colors.white,
+                                            blurRadius: 1,
+                                            offset: Offset(-1, -1),
+                                          ),
                                         ],
+                                        color: Colors.lightBlue.shade50,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                          16.0,
+                                          16.0,
+                                          16.0,
+                                          16.0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${item['name']}",
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "\$ ${item['current_price']}",
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Image.network("${item['image']}")
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
